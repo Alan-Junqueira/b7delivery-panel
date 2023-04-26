@@ -6,9 +6,11 @@ import { ReactNode } from 'react'
 
 export default function InsideLayout({ children }: { children: ReactNode }) {
   return (
-    <Container component="section" maxWidth="lg">
+    <>
       <Header />
-      {children}
-    </Container>
+      <Container component="section" maxWidth="lg">
+        {children}
+      </Container>
+    </>
   )
 }
