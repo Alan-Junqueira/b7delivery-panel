@@ -9,8 +9,12 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { HeaderDrawer } from './HeaderDrawer'
+import { useState } from 'react'
 
 export const Header = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
   const router = useRouter()
 
   const pageTitle = 'Painel B7Delivery'
@@ -19,7 +23,9 @@ export const Header = () => {
     router.push('/login')
   }
 
-  const handleDrawerToggle = () => { }
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen)
+  }
   return (
     <>
       <AppBar component="nav" position="relative">
@@ -28,7 +34,7 @@ export const Header = () => {
             color="inherit"
             edge="start"
             sx={{ display: { sm: 'none' } }}
-            onClick={() => handleDrawerToggle}
+            onClick={handleDrawerToggle}
           >
             <Menu />
           </IconButton>
@@ -57,6 +63,14 @@ export const Header = () => {
           </Box>
         </Toolbar>
       </AppBar>
+      <Box component="nav">
+        <HeaderDrawer
+          isOpen={isDrawerOpen}
+          onClose={handleDrawerToggle}
+          title={pageTitle}
+          onLogout={handleLogout}
+        />
+      </Box>
     </>
   )
 }
