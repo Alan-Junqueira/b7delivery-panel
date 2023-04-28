@@ -1,6 +1,6 @@
-import { Address } from 'cluster'
 import { OrderStatus } from './OrderStatus'
 import { CartItem } from './CartItem'
+import { Address } from './Address'
 
 export interface Order {
   id: number
