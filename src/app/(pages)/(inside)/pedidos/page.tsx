@@ -1,6 +1,7 @@
 'use client'
 
 import { Order } from '@/@types/Order'
+import { OrderStatus } from '@/@types/OrderStatus'
 import { OrderItem } from '@/components/OrderItem'
 import { api } from '@/libs/api'
 import { Refresh, Search } from '@mui/icons-material'
@@ -33,6 +34,11 @@ export default function PedidosPage() {
   const handleSearchInput = () => { }
 
   const handleSearchKey = () => { }
+
+  const handleChangeStatus = async (id: number, newStatus: OrderStatus) => {
+    await api.changeOrderStatus(id, newStatus)
+    getOrders()
+  }
 
   useEffect(() => {
     getOrders()
@@ -124,7 +130,10 @@ export default function PedidosPage() {
         {!isLoading &&
           orders.map((order) => (
             <Grid item xs={1} key={order.id}>
-              <OrderItem order={order} />
+              <OrderItem
+                orderDelivery={order}
+                onChangeStatus={handleChangeStatus}
+              />
             </Grid>
           ))}
       </Grid>

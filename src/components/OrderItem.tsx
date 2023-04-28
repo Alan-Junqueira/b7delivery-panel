@@ -1,13 +1,26 @@
 import { Order } from '@/@types/Order'
 import { OrderStatus } from '@/@types/OrderStatus'
-import { Box, BoxProps, Button, Typography } from '@mui/material'
+import {
+  Box,
+  BoxProps,
+  Button,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material'
 import React from 'react'
 
 interface IOrderItem extends BoxProps {
-  order: Order
+  orderDelivery: Order
+  onChangeStatus: (id: number, newStatus: OrderStatus) => void
 }
 
-export const OrderItem = ({ order, ...props }: IOrderItem) => {
+export const OrderItem = ({
+  orderDelivery,
+  onChangeStatus,
+  ...props
+}: IOrderItem) => {
   const {
     id,
     orderDate,
@@ -23,7 +36,7 @@ export const OrderItem = ({ order, ...props }: IOrderItem) => {
     cupom,
     cupomDiscount,
     userName,
-  } = order
+  } = orderDelivery
 
   const getStatusBackground = (status: OrderStatus) => {
     const statuses = {
@@ -33,6 +46,10 @@ export const OrderItem = ({ order, ...props }: IOrderItem) => {
     }
 
     return statuses[status]
+  }
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    onChangeStatus(id, event.target.value as OrderStatus)
   }
   return (
     <>
@@ -67,6 +84,19 @@ export const OrderItem = ({ order, ...props }: IOrderItem) => {
               #{id}
             </Typography>
           </Box>
+        </Box>
+
+        <Box sx={{ backgroundColor: '#EEE', p: 1 }}>
+          <Select
+            variant="standard"
+            value={status}
+            fullWidth
+            onChange={handleStatusChange}
+          >
+            <MenuItem value="preparing">Preparando</MenuItem>
+            <MenuItem value="sent">Enviado</MenuItem>
+            <MenuItem value="delivered">Entregue</MenuItem>
+          </Select>
         </Box>
       </Box>
     </>
