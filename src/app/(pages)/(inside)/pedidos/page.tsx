@@ -1,5 +1,8 @@
 'use client'
 
+import { Order } from '@/@types/Order'
+import { OrderItem } from '@/components/OrderItem'
+import { api } from '@/libs/api'
 import { Refresh, Search } from '@mui/icons-material'
 import {
   Box,
@@ -11,15 +14,29 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function PedidosPage() {
   const [searchInput, setSearchInput] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [orders, setOrders] = useState<Order[]>([])
+
+  const getOrders = async () => {
+    setSearchInput('')
+
+    setIsLoading(true)
+    const orderList: Order[] = await api.getOrders()
+    setOrders(orderList)
+    setIsLoading(false)
+  }
 
   const handleSearchInput = () => { }
 
   const handleSearchKey = () => { }
+
+  useEffect(() => {
+    getOrders()
+  }, [])
 
   return (
     <Box sx={{ my: 3 }}>
@@ -34,6 +51,7 @@ export default function PedidosPage() {
             <Button
               sx={{ justifyContent: { xs: 'flex-start', md: 'center' } }}
               size="small"
+              onClick={getOrders}
             >
               <Refresh />
               <Typography
@@ -103,6 +121,12 @@ export default function PedidosPage() {
             </Grid>
           </>
         )}
+        {!isLoading &&
+          orders.map((order) => (
+            <Grid item xs={1} key={order.id}>
+              <OrderItem order={order} />
+            </Grid>
+          ))}
       </Grid>
     </Box>
   )
