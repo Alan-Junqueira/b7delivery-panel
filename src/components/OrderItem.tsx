@@ -16,11 +16,13 @@ import React from 'react'
 interface IOrderItem extends BoxProps {
   orderDelivery: Order
   onChangeStatus: (id: number, newStatus: OrderStatus) => void
+  onPrint: (order: Order) => void
 }
 
 export const OrderItem = ({
   orderDelivery,
   onChangeStatus,
+  onPrint,
   ...props
 }: IOrderItem) => {
   const {
@@ -53,6 +55,11 @@ export const OrderItem = ({
   const handleStatusChange = (event: SelectChangeEvent) => {
     onChangeStatus(id, event.target.value as OrderStatus)
   }
+
+  const handlePrint = () => {
+    onPrint(orderDelivery)
+  }
+
   return (
     <>
       <Box
@@ -77,7 +84,11 @@ export const OrderItem = ({
           <Box>
             <Typography component="p">{dateFormat(orderDate)}</Typography>
             <Typography component="p">{userName}</Typography>
-            <Button size="small" sx={{ color: '#FFF', p: 0 }}>
+            <Button
+              size="small"
+              sx={{ color: '#FFF', p: 0 }}
+              onClick={handlePrint}
+            >
               Imprimir
             </Button>
           </Box>
