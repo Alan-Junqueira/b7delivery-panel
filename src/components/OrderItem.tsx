@@ -1,5 +1,7 @@
 import { Order } from '@/@types/Order'
 import { OrderStatus } from '@/@types/OrderStatus'
+import { dateFormat } from '@/utils/date-format'
+import { BorderBottom } from '@mui/icons-material'
 import {
   Box,
   BoxProps,
@@ -73,7 +75,7 @@ export const OrderItem = ({
           }}
         >
           <Box>
-            <Typography component="p">{orderDate}</Typography>
+            <Typography component="p">{dateFormat(orderDate)}</Typography>
             <Typography component="p">{userName}</Typography>
             <Button size="small" sx={{ color: '#FFF', p: 0 }}>
               Imprimir
@@ -97,6 +99,20 @@ export const OrderItem = ({
             <MenuItem value="sent">Enviado</MenuItem>
             <MenuItem value="delivered">Entregue</MenuItem>
           </Select>
+        </Box>
+        <Box sx={{ p: 1, backgroundColor: '#FFF' }}>
+          {products.map((productItem, index) => (
+            <Typography
+              sx={{
+                p: 1,
+                color: '#000',
+                fontWeight: 'bold',
+                borderBottom: '1px solid #CCC',
+              }}
+              component="p"
+              key={index}
+            >{`${productItem.quantity}x ${productItem.product.productName}`}</Typography>
+          ))}
         </Box>
       </Box>
     </>
